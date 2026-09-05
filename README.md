@@ -1,60 +1,331 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Traitz Chirps: Laravel Backend Internship Lab
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to **Traitz Chirps**, a small Laravel application created by **Junior DCoder** for TraitzTech Laravel backend interns. This project follows the learning style of [Laravel Learn](https://laravel.com/learn): start with a working application, understand each layer, then improve it through focused exercises.
 
-## About Laravel
+The application is intentionally unfinished in places. That gives you a safe, realistic codebase in which to practise Laravel fundamentals and submit meaningful improvements.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## What You Are Building
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Traitz Chirps is a simple social feed where users can:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Register and log in.
+- Log out securely.
+- Read the latest chirps.
+- Create a chirp with a message of up to 255 characters.
+- See the author and relative creation time for each chirp.
 
-## Learning Laravel
+The next stage is yours: add editing, deletion, trash and restore workflows, authorization, tests, and other improvements.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technology Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3 or newer
+- Laravel 13
+- SQLite by default, with Eloquent ORM
+- Blade views and Laravel components
+- Vite and Tailwind CSS / DaisyUI styling already included in the project
+- Pest for automated tests
+- Laravel Pint for PHP formatting
+- Laravel Boost for Laravel-aware AI development guidance
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Project Map
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```text
+app/
+  Http/Controllers/       Request handling and application actions
+  Models/                 Eloquent models such as User and Chirp
+database/
+  migrations/             Database table definitions
+  factories/              Test data factories
+  seeders/                Sample database data
+resources/views/          Blade pages and reusable components
+routes/web.php            Browser routes and middleware
+tests/                    Feature and unit tests
+public/                   Public web entry point and built assets
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Important files to read first:
 
-## Contributing
+- `routes/web.php`: the current browser routes.
+- `app/Http/Controllers/ChirpController.php`: listing and creation logic, plus CRUD methods waiting to be completed.
+- `app/Models/Chirp.php`: the chirp model and user relationship.
+- `database/migrations/*create_chirps_table.php`: the chirps table structure.
+- `resources/views/home.blade.php`: the feed and create form.
+- `resources/views/components/chirp.blade.php`: the reusable chirp display component.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Current Routes
 
-## Code of Conduct
+| Method | URL         | Purpose                   | Authentication      |
+| ------ | ----------- | ------------------------- | ------------------- |
+| `GET`  | `/`         | Show the latest 50 chirps | Public              |
+| `GET`  | `/register` | Show registration form    | Guests              |
+| `POST` | `/register` | Create a user account     | Public              |
+| `GET`  | `/login`    | Show login form           | Guests              |
+| `POST` | `/login`    | Authenticate a user       | Public              |
+| `POST` | `/logout`   | End the current session   | Authenticated users |
+| `POST` | `/chirps`   | Create a chirp            | Authenticated users |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run `php artisan route:list` whenever you add or change a route.
 
-## Security Vulnerabilities
+## Prerequisites
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Install these tools before starting:
 
-## License
+- PHP 8.3+
+- Composer
+- Node.js and npm
+- Git
+- A GitHub account
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# traitz-backend-chirps
-# traitz-backend-chirps
+Check your versions:
+
+```bash
+php -v
+composer -V
+node -v
+npm -v
+git --version
+```
+
+## Fork and Clone the Repository
+
+Each intern should work in their own fork. Do not push directly to the original repository.
+
+1. Open the project on GitHub: <https://github.com/JuniorDCoder/traitz-backend-chirps>
+2. Click **Fork** and create the fork under your GitHub account.
+3. Clone your fork, replacing `YOUR_USERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/traitz-backend-chirps.git
+cd traitz-backend-chirps
+```
+
+4. Add the original repository as an upstream remote:
+
+```bash
+git remote add upstream https://github.com/JuniorDCoder/traitz-backend-chirps.git
+git remote -v
+```
+
+5. Create a branch for your work:
+
+```bash
+git checkout -b feature/your-name-chirp-improvements
+```
+
+## Install and Run Locally
+
+From the project directory:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+npm install
+npm run build
+```
+
+Start the application:
+
+```bash
+php artisan serve
+```
+
+Open <http://127.0.0.1:8000> in your browser. During frontend development, use `npm run dev` in a second terminal instead of `npm run build`.
+
+You can also use the project setup script after cloning:
+
+```bash
+composer run setup
+```
+
+If the database needs to be recreated during learning, remember that this deletes local data:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+## Understanding the Current Flow
+
+When a user creates a chirp:
+
+1. The form in `resources/views/home.blade.php` sends a `POST` request to `/chirps`.
+2. The route applies the `auth` middleware and calls `ChirpController::store`.
+3. The controller validates the message.
+4. The authenticated user's ID is stored with the chirp.
+5. Eloquent saves the record in the `chirps` table.
+6. The user is redirected to the feed, where the new chirp is displayed.
+
+Read this flow in the code before starting the exercises. Trace the request from route to controller to model to view.
+
+## Exercises
+
+Complete the exercises in order. For each exercise, explain your decisions in the pull request description and add tests where requested.
+
+### 1. Add Edit and Update
+
+Allow the owner of a chirp to edit its message.
+
+Suggested tasks:
+
+- Add `GET /chirps/{chirp}/edit` and `PUT/PATCH /chirps/{chirp}` routes.
+- Implement `edit` and `update` in `ChirpController`.
+- Create an edit Blade view or a reusable form component.
+- Validate the updated message with the same 255-character limit.
+- Show an Edit action only to the chirp owner.
+- Redirect back with a success message after updating.
+
+### 2. Add Delete
+
+Allow the owner of a chirp to delete it.
+
+Suggested tasks:
+
+- Add a `DELETE /chirps/{chirp}` route.
+- Implement `destroy` using route model binding.
+- Add a delete form with CSRF protection in the chirp component.
+- Prevent users from deleting other users' chirps.
+- Add feature tests for successful deletion and unauthorized deletion.
+
+### 3. Add Authorization with a Policy
+
+Move ownership rules out of the controller and into a `ChirpPolicy`.
+
+Suggested tasks:
+
+- Generate a policy with Artisan.
+- Add an `update` and `delete` policy method.
+- Use `$this->authorize(...)` or route authorization in the controller.
+- Confirm that guests cannot edit or delete chirps.
+- Confirm that an authenticated user cannot modify another user's chirp.
+
+Useful command:
+
+```bash
+php artisan make:policy ChirpPolicy --model=Chirp
+```
+
+### 4. Add Trash and Restore
+
+Use Laravel soft deletes so deleted chirps can be recovered.
+
+Suggested tasks:
+
+- Add `deleted_at` with a migration using `$table->softDeletes()`.
+- Add the `SoftDeletes` trait to the `Chirp` model.
+- Change deletion to a soft delete.
+- Add a private or authenticated trash page.
+- Add a restore action for the owner or an administrator.
+- Add a permanent delete action with an explicit confirmation step.
+- Learn and demonstrate `withTrashed()`, `onlyTrashed()`, and `restore()`.
+
+### 5. Improve Authentication Feedback
+
+Complete the login controller and make authentication behavior consistent.
+
+Suggested tasks:
+
+- Validate email and password input.
+- Authenticate with `Auth::attempt`.
+- Regenerate the session after login.
+- Redirect authenticated users away from guest pages.
+- Return useful validation errors without revealing sensitive information.
+- Add tests for successful login, failed login, logout, and session regeneration.
+
+### 6. Add Search and Pagination
+
+Make the feed easier to use as the number of chirps grows.
+
+Suggested tasks:
+
+- Add a search input for message or author name.
+- Use Eloquent query building instead of filtering in Blade.
+- Replace `take(50)->get()` with pagination.
+- Display pagination links.
+- Preserve search terms while navigating pages.
+- Add feature tests for search and pagination.
+
+### 7. Add Stronger Domain Features
+
+Choose one or more:
+
+- Character counter and clearer validation feedback.
+- Hashtags with a searchable hashtag page.
+- Likes or bookmarks with database relationships.
+- User profile pages and a user's chirp history.
+- Admin moderation tools.
+- Report a chirp workflow.
+- Rate limiting for chirp creation.
+- Notifications when someone interacts with a chirp.
+- API endpoints protected with authentication and feature tests.
+
+Keep each feature focused. A small, well-tested feature is better than a large unfinished change.
+
+## Quality Checklist
+
+Before submitting, run:
+
+```bash
+php artisan test --compact
+vendor/bin/pint --dirty --format agent
+php artisan route:list
+```
+
+Also check manually that:
+
+- A guest cannot create, edit, delete, restore, or permanently delete chirps.
+- A user can manage only their own chirps.
+- Validation errors are visible and do not lose the submitted form data.
+- CSRF protection is present on state-changing forms.
+- Empty states and success messages are understandable.
+- Your changes work after `php artisan migrate:fresh --seed`.
+
+## Commit and Submit Your Work
+
+Use clear commits that describe the change:
+
+```bash
+git add .
+git commit -m "Add chirp editing and deletion"
+git push -u origin feature/your-name-chirp-improvements
+```
+
+Then open a pull request from your fork to `JuniorDCoder/traitz-backend-chirps:main`.
+
+Your pull request should include:
+
+- Your name and the exercise(s) completed.
+- A short summary of the behavior you added.
+- Screenshots or a short recording for UI changes.
+- The tests and commands you ran.
+- Any decisions, tradeoffs, or questions.
+- A note about unfinished work, if applicable.
+
+After opening the pull request, email **dcodertechie@gmail.com** with:
+
+- Subject: `Traitz Chirps Internship Submission - Your Name`
+- Your full name.
+- Your GitHub username.
+- The pull request URL.
+- The exercise(s) completed.
+- A short reflection on what you learned and what you would improve next.
+
+## Learning References
+
+- [Laravel Learn](https://laravel.com/learn)
+- [Laravel Documentation](https://laravel.com/docs)
+- [Routing](https://laravel.com/docs/routing)
+- [Controllers](https://laravel.com/docs/controllers)
+- [Eloquent Relationships](https://laravel.com/docs/eloquent-relationships)
+- [Validation](https://laravel.com/docs/validation)
+- [Authorization](https://laravel.com/docs/authorization)
+- [Soft Deletes](https://laravel.com/docs/eloquent#soft-deleting)
+- [Testing](https://laravel.com/docs/testing)
+- [Laravel Boost](https://laravel.com/docs/boost)
+
+## Maintainer
+
+Created and maintained by **Junior DCoder** for the **TraitzTech Laravel backend internship learning program**.
+
+The purpose of this repository is practice: read the existing code, make a small improvement, test it, explain it, and keep learning.
