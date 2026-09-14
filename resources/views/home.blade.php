@@ -12,34 +12,51 @@
     <!-- Chirp Form -->
     <div class="card bg-base-100 shadow mt-8">
         <div class="card-body">
-            <form method="POST" action="/chirps">
-                @csrf
-                <div class="form-control w-full">
-                    <textarea
-                        name="message"
-                        placeholder="What's on your mind?"
-                        class="textarea textarea-bordered w-full resize-none @error('message') textarea-error @enderror"
-                        rows="4"
-                        maxlength="255"
-                        required
-                    >{{ old('message') }}</textarea>
+          <form method="POST" action="/chirps">
+    @csrf
+    <div class="form-control w-full">
+        <textarea
+            id="chirp-message"
+            name="message"
+            placeholder="What's on your mind?"
+            class="textarea textarea-bordered w-full resize-none @error('message') textarea-error @enderror"
+            rows="4"
+            maxlength="255"
+            required
+        >{{ old('message') }}</textarea>
 
-                    @error('message')
-                        <div class="label">
-                            <span class="label-text-alt text-error">{{ $message }}</span>
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mt-4 flex items-center justify-end">
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        Chirp
-                    </button>
-                </div>
-            </form>
+        <div class="flex justify-between items-center mt-2">
+            <div>
+                @error('message')
+                    <span class="text-sm text-error">{{ $message }}</span>
+                @enderror
+            </div>
+            <span id="char-count" class="text-sm text-base-content/60">0 / 255</span>
         </div>
     </div>
 
+    <div class="mt-4 flex items-center justify-end">
+        <button type="submit" class="btn btn-primary btn-sm">
+            Chirp
+        </button>
+    </div>
+</form>
+
+<script>
+    const textarea = document.getElementById('chirp-message');
+    const counter = document.getElementById('char-count');
+    function updateCount() {
+        const len = textarea.value.length;
+        counter.textContent = len + ' / 255';
+        if (len >= 255) counter.className = 'text-sm text-error font-bold';
+        else if (len > 200) counter.className = 'text-sm text-warning';
+        else counter.className = 'text-sm text-base-content/60';
+    }
+    textarea.addEventListener('input', updateCount);
+    updateCount();
+</script>  
+        </div>
+    </div>
     <div class="max-w-2xl mx-auto">
         @forelse ($chirps as $chirp)
             <x-chirp :chirp="$chirp" class="mb-4" />
