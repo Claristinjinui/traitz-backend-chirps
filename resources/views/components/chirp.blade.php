@@ -4,6 +4,7 @@
     <div class="card-body">
         <div class="flex space-x-3">
             @if($chirp->user)
+
                 <div class="avatar">
                     <div class="size-10 rounded-full">
                         <img src="<https://avatars.laravel.cloud/>{{ urlencode($chirp->user->email) }}"
@@ -30,8 +31,18 @@
 
                 <p class="mt-1">
                     {{ $chirp->message }}
-                </p>
-            </div>
-        </div>
+</p>
+@can('update', $chirp)
+<div class="mt-2 flex gap-4">
+    <a href="{{ route('chirps.edit', $chirp) }}" class="text-sm font-bold link">Edit</a>
+    <form method="POST" action="{{ route('chirps.destroy', $chirp) }}" onsubmit="return confirm('Are you sure?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-sm font-bold text-error">Delete</button>
+    </form>
+</div>
+@endcan
     </div>
+ </div>
+</div>
 </div>

@@ -1,83 +1,89 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Chirp;
 use Illuminate\Http\Request;
 
 class ChirpController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+     use AuthorizesRequests;
+
+    public function index(Request $request)
     {
+        // Exercise 6: Search + Pagination
+        $search = $request->input('search');
+
         $chirps = Chirp::with('user')
+            ->when($search, function ($query, $search) {
+                $query->where('message', 'like', "%{$search}%")
+                    ->orWhereHas('user', fn ($q) => $q->where('name', 'like', "%{$search}%"));
+            })
             ->latest()
-            ->take(50)
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('home', ['chirps' => $chirps]);
+        return view('home', compact('chirps', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'message' => 'required|string|max:255',
-        ], [
-            'message.required' => 'The message field is required.',
-            'message.string' => 'The message must be a string.',
-            'message.max' => 'The message may not be greater than 255 characters.',
         ]);
 
-        $chirp = new Chirp;
-        $chirp->message = $request->input('message');
-        $chirp->user_id = auth()->id();
-        $chirp->save();
+        $request->user()->chirps()->create($validated);
 
-        return redirect('/')->with('success', 'Chirp created successfully.');
+        return redirect('/')->with('success', 'Chirp created!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   public function edit(Chirp $chirp)
+{
+    $this->authorize('update', $chirp); 
+    
+    return view('chirps.edit', compact('chirp'));
+}
+public function update(Request $request, Chirp $chirp)
+{
+    $this->authorize('update', $chirp); // <- use Policy, not if
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    $validated = $request->validate([
+        'message' => ['required','string','max:255'],
+    ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    $chirp->update($validated);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    return redirect('/')->with('success', 'Chirp updated!');
+}
+
+    // Exercise 2
+   public function destroy(Chirp $chirp)
+{
+    $this->authorize('delete', $chirp);
+    $chirp->delete();
+    return redirect('/')->with('success', 'Chirp deleted!');
+}
+
+   //exercise4
+   public function trash()
+{
+    $chirps = Chirp::onlyTrashed()->where('user_id', auth()->id())->latest()->get();
+    return view('chirps.trash', ['chirps' => $chirps]);
+}
+
+public function restore($id)
+{
+    $chirp = Chirp::onlyTrashed()->findOrFail($id);
+    $this->authorize('delete', $chirp);
+    $chirp->restore();
+    return redirect()->route('chirps.trash')->with('success', 'Chirp restored!');
+}
+
+public function forceDelete($id)
+{
+    $chirp = Chirp::onlyTrashed()->findOrFail($id);
+    $this->authorize('delete', $chirp);
+    $chirp->forceDelete();
+    return redirect()->route('chirps.trash')->with('success', 'Chirp deleted permanently!');
+}
 }

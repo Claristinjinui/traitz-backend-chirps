@@ -1,6 +1,13 @@
 <x-layout>
     <x-slot:title>Welcome</x-slot:title>
+<div class="mb-4">
+    <a href="{{ route('chirps.trash') }}" style="background:#111; color:white; padding:8px 16px; border-radius:6px;">🗑️ View Trash</a>
+</div>
     <h1 class="text-3xl font-bold mt-8">Latest Chirps</h1>
+<form method="GET" action="/" class="mb-4 mt-4">
+        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search chirps..." class="input input-bordered w-full max-w-xs">
+        <button class="btn">Search</button>
+    </form>
 
     <!-- Chirp Form -->
     <div class="card bg-base-100 shadow mt-8">
@@ -45,9 +52,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                             </svg>
                             <p class="mt-4 text-base-content/60">No chirps yet. Be the first to chirp!</p>
-                        </div>
+                    </div>
+                     </div>
                     </div>
                 </div>
         @endforelse
+        <div class="mt-4">
+        {{ $chirps->links() }}
+</div>
     </div>
 </x-layout>
